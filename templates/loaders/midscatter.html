@@ -1,0 +1,17 @@
+{% extends 'graphs/base.html' %}
+
+{% block content %}
+
+
+<a style="display: none;" id="clickhere" href="{% url 'scatterplot' %}">Click Here</a>
+
+<div id="loader">
+</div>
+<p>Loading...</p>
+
+<script>
+    var clicks = document.getElementById('clickhere')
+    clicks.click()
+</script>
+
+{% endblock %}

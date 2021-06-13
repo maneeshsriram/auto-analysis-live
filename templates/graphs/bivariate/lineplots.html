@@ -1,0 +1,14 @@
+{% extends 'graphs/base.html' %}
+
+
+{% block content %}
+
+<div class="text-center p-5">
+    <h1 class="text-dark mt-4 mb-3 pb-2 ">Line plot</h1>
+
+    {% for lineplot in lineplots %}
+    <img src="data:image/png;base64,{{lineplot|safe}}" alt="" class="text-center" width="1295px">
+    {% endfor %}
+</div>
+
+{% endblock %}

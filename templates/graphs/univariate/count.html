@@ -1,0 +1,14 @@
+{% extends 'graphs/base.html' %}
+
+
+{% block content %}
+
+<div class="text-center  p-5">
+  <h1 class="text-dark mt-4 mb-3 pb-2 ">Count plot</h1>
+
+  {% for count in counts %}
+  <img src="data:image/png;base64,{{count|safe}}" alt="" class="text-center" width="1295px">
+  {% endfor %}
+</div>
+
+{% endblock %}

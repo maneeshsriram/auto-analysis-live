@@ -1,0 +1,14 @@
+{% extends 'graphs/base.html' %}
+
+
+{% block content %}
+
+
+
+<div class="text-center p-5" onload="onload()">
+  <h1 class="text-dark mt-4 mb-3 pb-2">Pair Plot</h1>
+  <img src="data:image/png;base64,{{pairplot|safe}}" alt="" class="text-center" width="1295px">
+</div>
+
+
+{% endblock %}

@@ -1,0 +1,76 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <!-- Popper JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+
+    <!-- Latest compiled JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{% static './assets/css/styles.css' %}">
+    <title>Report</title>
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-md bg-dark navbar-dark">
+        <!-- Brand -->
+        <a class="navbar-brand" href="{% url 'home' %}" style="font-size: larger;">Auto Analysis</a>
+
+        <!-- Toggler/collapsibe Button -->
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <!-- Navbar links -->
+        <div class="collapse navbar-collapse" id="collapsibleNavbar">
+            <ul class="navbar-nav text-white" style="font-size: large;">
+                <li class="nav-item dropdown px-3">
+                    <a class="nav-link dropdown-toggle text-white" href="#" id="navbardrop" data-toggle="dropdown">
+                        Univariate Graphs
+                    </a>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item" href="{% url 'midhistogram' %}">Histogram</a>
+                        <a class="dropdown-item" href="{% url 'midboxplot' %}">Boxplot</a>
+                        <a class="dropdown-item" href="{% url 'middensity' %}">Density Plot</a>
+                        <a class="dropdown-item" href="{% url 'midcount' %}">Count Plot</a>
+                        <a class="dropdown-item" href="{% url 'midpie' %}">Pie Chart</a>
+                    </div>
+                </li>
+                <li class="nav-item dropdown px-3">
+                    <a class="nav-link dropdown-toggle text-white" href="#" id="navbardrop" data-toggle="dropdown">
+                        Bivariate Graphs
+                    </a>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item" href="{% url 'midscatter' %}">Scatter Plot</a>
+                        <a class="dropdown-item" href="{% url 'midline' %}">Line Plot</a>
+                    </div>
+                </li>
+                <li class="nav-item dropdown px-3">
+                    <a class="nav-link dropdown-toggle text-white" href="#" id="navbardrop" data-toggle="dropdown">
+                        Multivariate Graphs
+                    </a>
+
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item" href="{% url 'midpair' %}">Pairplot</a>
+                        <a class="dropdown-item" href="{% url 'midheat' %}">Correlation Heatmap</a>
+                    </div>
+                </li>
+
+            </ul>
+        </div>
+    </nav>
+
+    {% block content %} {% endblock %}
+
+</body>
+
+
+</html>

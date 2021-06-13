@@ -1,0 +1,97 @@
+{% extends 'graphs/base.html' %}
+
+{% block content %}
+
+
+<div class="container mt-5" id="content" onload="onload()">
+    <div class="row border-bottom border-secondary rounded p-4">
+        <div class="col-md-12 ">
+            <h1 class="text-primary pb-2">Overview</h1>
+            <div class="pl-md-5 ml-md-5">
+                <div class="row">
+                    <h5 class="col-md-8 border-bottom lead">Number of Variables</h5>
+                    <h5 class="col-md-4 border-bottom">{{variables}}</h5>
+                    <h5 class="col-md-8 border-bottom lead">Number of Observation</h5>
+                    <h5 class="col-md-4 border-bottom">{{observations}}</h5>
+                    <h5 class="col-md-8 border-bottom lead">Duplicate Rows</h5>
+                    <h5 class="col-md-4 border-bottom">{{rows}}</h5>
+                    <h5 class="col-md-8 border-bottom lead">Number of Numericals columns</h5>
+                    <h5 class="col-md-4 border-bottom">{{numCols}}</h5>
+                    <h5 class="col-md-8 border-bottom lead">Number of Categorical columns</h5>
+                    <h5 class="col-md-4 border-bottom">{{catCols}}</h5>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <h1 class="text-primary mt-5 pt-5 pb-3"> Numerical Features</h1>
+    <div class="border-bottom border-secondary rounded p-4">
+        {% for dict in numericalValues %}
+        <div class="row mb-5 ">
+            <div class="col-md-12">
+                <h3 class="text-danger">{{dict.name}}</h3>
+            </div>
+            <div class="col-md-8 offset-md-2">
+                <div class="row">
+                    <h5 class="col-md-8 border-bottom lead">Count </h5>
+                    <h5 class="col-md-4 border-bottom">{{dict.count}}</h5>
+                    <h5 class="col-md-8 border-bottom lead">Total missing values </h5>
+                    <h5 class="col-md-4 border-bottom">{{dict.missNo}}</h5>
+                    <h5 class="col-md-8 border-bottom lead">% of missing values </h5>
+                    <h5 class="col-md-4 border-bottom">{{dict.missPer}}</h5>
+                    <h5 class="col-md-8 border-bottom lead">Mean </h5>
+                    <h5 class="col-md-4 border-bottom">{{dict.mean}}</h5>
+                    <h5 class="col-md-8 border-bottom lead">Median </h5>
+                    <h5 class="col-md-4 border-bottom">{{dict.median}}</h5>
+                    <h5 class="col-md-8 border-bottom lead">Mode </h5>
+                    <h5 class="col-md-4 border-bottom">{{dict.mode}}</h5>
+                    <h5 class="col-md-8 border-bottom lead">Variance </h5>
+                    <h5 class="col-md-4 border-bottom">{{dict.var}}</h5>
+                    <h5 class="col-md-8 border-bottom lead">Standard Deviation </h5>
+                    <h5 class="col-md-4 border-bottom">{{dict.std}}</h5>
+                    <h5 class="col-md-8 border-bottom lead">Minimum Value</h5>
+                    <h5 class="col-md-4 border-bottom">{{dict.min}}</h5>
+                    <h5 class="col-md-8 border-bottom lead">Maximum Value</h5>
+                    <h5 class="col-md-4 border-bottom">{{dict.max}}</h5>
+                    <h5 class="col-md-8 border-bottom lead">Q1</h5>
+                    <h5 class="col-md-4 border-bottom">{{dict.q1}}</h5>
+                    <h5 class="col-md-8 border-bottom lead">Q2</h5>
+                    <h5 class="col-md-4 border-bottom">{{dict.q2}}</h5>
+                    <h5 class="col-md-8 border-bottom lead">Q3</h5>
+                    <h5 class="col-md-4 border-bottom">{{dict.q3}}</h5>
+                    <h5 class="col-md-8 border-bottom lead">IQR</h5>
+                    <h5 class="col-md-4 border-bottom">{{dict.iqr}}</h5>
+                    <h5 class="col-md-8 border-bottom lead">Kurtosis</h5>
+                    <h5 class="col-md-4 border-bottom">{{dict.kurtosis}}</h5>
+
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <h1 class="text-primary mt-5 pt-5 pb-3">Categorical Features</h1>
+    {% for dict in categoricalValues %}
+    <div class="row mb-5">
+        <div class="col-md-12">
+            <h3 class="text-danger">{{dict.name}}</h3>
+        </div>
+        <div class="col-md-8 offset-md-2">
+            <div class="row">
+                <h5 class="col-md-8 border-bottom lead">Count</h5>
+                <h5 class="col-md-4 border-bottom">{{dict.count}}</h5>
+                <h5 class="col-md-8 border-bottom lead">Total missing values</h5>
+                <h5 class="col-md-4 border-bottom">{{dict.missNo}}</h5>
+                <h5 class="col-md-8 border-bottom lead">% of missing values</h5>
+                <h5 class="col-md-4 border-bottom">{{dict.missPer}}</h5>
+                <h5 class="col-md-8 border-bottom lead">Mode</h5>
+                <h5 class="col-md-4 border-bottom">{{dict.mode}}</h5>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+
+
+{% endblock %}
