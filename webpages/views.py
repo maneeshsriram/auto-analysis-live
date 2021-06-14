@@ -182,7 +182,7 @@ def pairplot(request):
         }
         return render(request, 'graphs/multivariate/pairplot.html', data)
     except Exception as e:
-        return HttpResponse("Error : ", e)
+        return HttpResponse(e)
 
 
 def heatmap(request):
@@ -202,7 +202,7 @@ def heatmap(request):
         }
         return render(request, 'graphs/multivariate/correlation_heatmap.html', data)
     except Exception as e:
-        return HttpResponse("Error : ", e)
+        return HttpResponse(e)
 
 
 def scatterplot(request):
@@ -229,7 +229,7 @@ def scatterplot(request):
         }
         return render(request, 'graphs/bivariate/scatterplot.html', data)
     except Exception as e:
-        return HttpResponse("Error : ", e)
+        return HttpResponse(e)
 
 
 def lineplot(request):
@@ -256,7 +256,7 @@ def lineplot(request):
         }
         return render(request, 'graphs/bivariate/lineplots.html', data)
     except Exception as e:
-        return HttpResponse("Error : ", e)
+        return HttpResponse(e)
 
 
 def histogram(request):
@@ -283,7 +283,7 @@ def histogram(request):
         }
         return render(request, 'graphs/univariate/histogram.html', data)
     except Exception as e:
-        return HttpResponse("Error : ", e)
+        return HttpResponse(e)
 
 
 def boxplot(request):
@@ -310,7 +310,7 @@ def boxplot(request):
         }
         return render(request, 'graphs/univariate/boxplot.html', data)
     except Exception as e:
-        return HttpResponse("Error : ", e)
+        return HttpResponse(e)
 
 
 def density(request):
@@ -337,7 +337,7 @@ def density(request):
         }
         return render(request, 'graphs/univariate/density.html', data)
     except Exception as e:
-        return HttpResponse("Error : ", e)
+        return HttpResponse(e)
 
 
 def count(request):
@@ -365,7 +365,7 @@ def count(request):
         }
         return render(request, 'graphs/univariate/count.html', data)
     except Exception as e:
-        return HttpResponse("Error : ", e)
+        return HttpResponse(e)
 
 
 def pie(request):
@@ -401,4 +401,4 @@ def pie(request):
         }
         return render(request, 'graphs/univariate/pie.html', data)
     except Exception as e:
-        return HttpResponse("Error : ", e)
+        return HttpResponse(e)
