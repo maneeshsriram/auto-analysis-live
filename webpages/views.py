@@ -25,6 +25,8 @@ def report(request):
         if file.content_type == 'application/vnd.ms-excel':
 
             df = pd.read_csv(file)
+            print("DF --->>>", type(df))
+
             numerical = df.select_dtypes(include=['int64']).columns.tolist()+df.select_dtypes(include=['float64']).columns.tolist(
             )+df.select_dtypes(include=['int32']).columns.tolist()+df.select_dtypes(include=['float32']).columns.tolist()
             categorical_temp = df.select_dtypes(
@@ -66,6 +68,9 @@ def report(request):
 
             numericalValues = []
             categoricalValues = []
+
+            request.session['numerical'] = numerical
+            request.session['categorical'] = categorical
 
             for i in numerical:
                 single = {
@@ -205,8 +210,8 @@ def heatmap(request):
 
 def scatterplot(request):
     scatterplots = []
-    for i in numerical:
-        for j in numerical:
+    for i in request.session['numerical']:
+        for j in request.session['numerical']:
             try:
                 plt.switch_backend('AGG')
                 plt.figure(figsize=(10, 5))
@@ -229,8 +234,8 @@ def scatterplot(request):
 
 def lineplot(request):
     lineplots = []
-    for i in numerical:
-        for j in numerical:
+    for i in request.session['numerical']:
+        for j in request.session['numerical']:
             try:
                 plt.switch_backend('AGG')
                 plt.figure(figsize=(10, 5))
@@ -254,7 +259,7 @@ def lineplot(request):
 def histogram(request):
     # plt.figure(figsize=(10, 5))
     histograms = []
-    for i in numerical:
+    for i in request.session['numerical']:
         try:
             plt.switch_backend('AGG')
             sns.histplot(data=df, x=i)
@@ -277,7 +282,7 @@ def histogram(request):
 
 def boxplot(request):
     boxplots = []
-    for i in numerical:
+    for i in request.session['numerical']:
         try:
             plt.switch_backend('AGG')
             plt.figure(figsize=(10, 5))
@@ -301,7 +306,7 @@ def boxplot(request):
 
 def density(request):
     densitys = []
-    for i in numerical:
+    for i in request.session['numerical']:
         try:
             plt.switch_backend('AGG')
             plt.figure(figsize=(10, 5))
@@ -325,7 +330,7 @@ def density(request):
 
 def count(request):
     counts = []
-    for i in categorical:
+    for i in request.session['categorical']:
         try:
             if df[i].value_counts().count() < 12:
                 plt.switch_backend('AGG')
@@ -352,7 +357,7 @@ def pie(request):
     count_pie = []
     count = []
     pies = []
-    for i in categorical:
+    for i in request.session['categorical']:
         try:
             count_pie = df[i].value_counts()
             index_col = list(df[i].value_counts().index)
