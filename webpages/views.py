@@ -181,8 +181,8 @@ def pairplot(request):
             'pairplot': pair
         }
         return render(request, 'graphs/multivariate/pairplot.html', data)
-    except:
-        return HttpResponse("Not possible to plot Pairplot")
+    except Exception as e:
+        return HttpResponse("Error : ", e)
 
 
 def heatmap(request):
@@ -201,183 +201,204 @@ def heatmap(request):
             'heatmap': heat
         }
         return render(request, 'graphs/multivariate/correlation_heatmap.html', data)
-    except:
-        return HttpResponse("Not possible to plot Pairplot")
+    except Exception as e:
+        return HttpResponse("Error : ", e)
 
 
 def scatterplot(request):
     scatterplots = []
-    for i in numerical:
-        for j in numerical:
-            try:
-                plt.switch_backend('AGG')
-                plt.figure(figsize=(10, 5))
-                sns.scatterplot(data=df, x=i, y=j)
-                buffer = BytesIO()
-                plt.savefig(buffer, format='png')
-                buffer.seek(0)
-                img_png = buffer.getvalue()
-                heat = base64.b64encode(img_png)
-                heat = heat.decode('utf-8')
-                buffer.close()
-                scatterplots.append(heat)
-            except:
-                continue
-    data = {
-        'scatterplots': scatterplots
-    }
-    return render(request, 'graphs/bivariate/scatterplot.html', data)
+    try:
+        for i in numerical:
+            for j in numerical:
+                try:
+                    plt.switch_backend('AGG')
+                    plt.figure(figsize=(10, 5))
+                    sns.scatterplot(data=df, x=i, y=j)
+                    buffer = BytesIO()
+                    plt.savefig(buffer, format='png')
+                    buffer.seek(0)
+                    img_png = buffer.getvalue()
+                    heat = base64.b64encode(img_png)
+                    heat = heat.decode('utf-8')
+                    buffer.close()
+                    scatterplots.append(heat)
+                except:
+                    continue
+        data = {
+            'scatterplots': scatterplots
+        }
+        return render(request, 'graphs/bivariate/scatterplot.html', data)
+    except Exception as e:
+        return HttpResponse("Error : ", e)
 
 
 def lineplot(request):
-    lineplots = []
-    for i in numerical:
-        for j in numerical:
-            try:
-                plt.switch_backend('AGG')
-                plt.figure(figsize=(10, 5))
-                sns.lineplot(data=df, x=i, y=j)
-                buffer = BytesIO()
-                plt.savefig(buffer, format='png')
-                buffer.seek(0)
-                img_png = buffer.getvalue()
-                heat = base64.b64encode(img_png)
-                heat = heat.decode('utf-8')
-                buffer.close()
-                lineplots.append(heat)
-            except:
-                continue
-    data = {
-        'lineplots': lineplots
-    }
-    return render(request, 'graphs/bivariate/lineplots.html', data)
+    try:
+        lineplots = []
+        for i in numerical:
+            for j in numerical:
+                try:
+                    plt.switch_backend('AGG')
+                    plt.figure(figsize=(10, 5))
+                    sns.lineplot(data=df, x=i, y=j)
+                    buffer = BytesIO()
+                    plt.savefig(buffer, format='png')
+                    buffer.seek(0)
+                    img_png = buffer.getvalue()
+                    heat = base64.b64encode(img_png)
+                    heat = heat.decode('utf-8')
+                    buffer.close()
+                    lineplots.append(heat)
+                except:
+                    continue
+        data = {
+            'lineplots': lineplots
+        }
+        return render(request, 'graphs/bivariate/lineplots.html', data)
+    except Exception as e:
+        return HttpResponse("Error : ", e)
 
 
 def histogram(request):
-    # plt.figure(figsize=(10, 5))
-    histograms = []
-    for i in numerical:
-        try:
-            plt.switch_backend('AGG')
-            sns.histplot(data=df, x=i)
-            plt.xlabel(i)
-            buffer = BytesIO()
-            plt.savefig(buffer, format='png')
-            buffer.seek(0)
-            img_png = buffer.getvalue()
-            heat = base64.b64encode(img_png)
-            heat = heat.decode('utf-8')
-            buffer.close()
-            histograms.append(heat)
-        except:
-            continue
-    data = {
-        'histograms': histograms
-    }
-    return render(request, 'graphs/univariate/histogram.html', data)
+    try:
+        # plt.figure(figsize=(10, 5))
+        histograms = []
+        for i in numerical:
+            try:
+                plt.switch_backend('AGG')
+                sns.histplot(data=df, x=i)
+                plt.xlabel(i)
+                buffer = BytesIO()
+                plt.savefig(buffer, format='png')
+                buffer.seek(0)
+                img_png = buffer.getvalue()
+                heat = base64.b64encode(img_png)
+                heat = heat.decode('utf-8')
+                buffer.close()
+                histograms.append(heat)
+            except:
+                continue
+        data = {
+            'histograms': histograms
+        }
+        return render(request, 'graphs/univariate/histogram.html', data)
+    except Exception as e:
+        return HttpResponse("Error : ", e)
 
 
 def boxplot(request):
-    boxplots = []
-    for i in numerical:
-        try:
-            plt.switch_backend('AGG')
-            plt.figure(figsize=(10, 5))
-            sns.boxplot(df[i])
-            plt.xlabel(i)
-            buffer = BytesIO()
-            plt.savefig(buffer, format='png')
-            buffer.seek(0)
-            img_png = buffer.getvalue()
-            heat = base64.b64encode(img_png)
-            heat = heat.decode('utf-8')
-            buffer.close()
-            boxplots.append(heat)
-        except:
-            continue
-    data = {
-        'boxplots': boxplots
-    }
-    return render(request, 'graphs/univariate/boxplot.html', data)
+    try:
+        boxplots = []
+        for i in numerical:
+            try:
+                plt.switch_backend('AGG')
+                plt.figure(figsize=(10, 5))
+                sns.boxplot(df[i])
+                plt.xlabel(i)
+                buffer = BytesIO()
+                plt.savefig(buffer, format='png')
+                buffer.seek(0)
+                img_png = buffer.getvalue()
+                heat = base64.b64encode(img_png)
+                heat = heat.decode('utf-8')
+                buffer.close()
+                boxplots.append(heat)
+            except:
+                continue
+        data = {
+            'boxplots': boxplots
+        }
+        return render(request, 'graphs/univariate/boxplot.html', data)
+    except Exception as e:
+        return HttpResponse("Error : ", e)
 
 
 def density(request):
-    densitys = []
-    for i in numerical:
-        try:
-            plt.switch_backend('AGG')
-            plt.figure(figsize=(10, 5))
-            sns.distplot(df[i])
-            plt.legend()
-            buffer = BytesIO()
-            plt.savefig(buffer, format='png')
-            buffer.seek(0)
-            img_png = buffer.getvalue()
-            heat = base64.b64encode(img_png)
-            heat = heat.decode('utf-8')
-            buffer.close()
-            densitys.append(heat)
-        except:
-            continue
-    data = {
-        'densitys': densitys
-    }
-    return render(request, 'graphs/univariate/density.html', data)
+    try:
+        densitys = []
+        for i in numerical:
+            try:
+                plt.switch_backend('AGG')
+                plt.figure(figsize=(10, 5))
+                sns.distplot(df[i])
+                plt.legend()
+                buffer = BytesIO()
+                plt.savefig(buffer, format='png')
+                buffer.seek(0)
+                img_png = buffer.getvalue()
+                heat = base64.b64encode(img_png)
+                heat = heat.decode('utf-8')
+                buffer.close()
+                densitys.append(heat)
+            except:
+                continue
+        data = {
+            'densitys': densitys
+        }
+        return render(request, 'graphs/univariate/density.html', data)
+    except Exception as e:
+        return HttpResponse("Error : ", e)
 
 
 def count(request):
-    counts = []
-    for i in categorical:
-        try:
-            if df[i].value_counts().count() < 12:
-                plt.switch_backend('AGG')
-                plt.figure(figsize=(10, 5))
-                sns.countplot(y=df[i])
-                plt.legend()
-                buffer = BytesIO()
-                plt.savefig(buffer, format='png')
-                buffer.seek(0)
-                img_png = buffer.getvalue()
-                heat = base64.b64encode(img_png)
-                heat = heat.decode('utf-8')
-                buffer.close()
-                counts.append(heat)
-        except:
-            continue
-    data = {
-        'counts': counts
-    }
-    return render(request, 'graphs/univariate/count.html', data)
+    try:
+        counts = []
+        for i in categorical:
+            try:
+                if df[i].value_counts().count() < 12:
+                    plt.switch_backend('AGG')
+                    plt.figure(figsize=(10, 5))
+                    sns.countplot(y=df[i])
+                    plt.legend()
+                    buffer = BytesIO()
+                    plt.savefig(buffer, format='png')
+                    buffer.seek(0)
+                    img_png = buffer.getvalue()
+                    heat = base64.b64encode(img_png)
+                    heat = heat.decode('utf-8')
+                    buffer.close()
+                    counts.append(heat)
+            except:
+                continue
+        data = {
+            'counts': counts
+        }
+        return render(request, 'graphs/univariate/count.html', data)
+    except Exception as e:
+        return HttpResponse("Error : ", e)
 
 
 def pie(request):
-    count_pie = []
-    count = []
-    pies = []
-    for i in categorical:
-        try:
-            count_pie = df[i].value_counts()
-            index_col = list(df[i].value_counts().index)
-            for j in count_pie:
-                count.append(j)
-            if (df[i].value_counts().count() < 10):
-                plt.switch_backend('AGG')
-                plt.figure(figsize=(10, 5))
-                plt.pie(count, labels=index_col)
-                plt.legend()
-                buffer = BytesIO()
-                plt.savefig(buffer, format='png')
-                buffer.seek(0)
-                img_png = buffer.getvalue()
-                heat = base64.b64encode(img_png)
-                heat = heat.decode('utf-8')
-                buffer.close()
-                pies.append(heat)
-            count.clear()
-            index_col.clear()
-        except:
-            continue
-    data = {
-        'pies': pies
-    }
-    return render(request, 'graphs/univariate/pie.html', data)
+    try:
+        count_pie = []
+        count = []
+        pies = []
+        for i in categorical:
+            try:
+                count_pie = df[i].value_counts()
+                index_col = list(df[i].value_counts().index)
+                for j in count_pie:
+                    count.append(j)
+                if (df[i].value_counts().count() < 10):
+                    plt.switch_backend('AGG')
+                    plt.figure(figsize=(10, 5))
+                    plt.pie(count, labels=index_col)
+                    plt.legend()
+                    buffer = BytesIO()
+                    plt.savefig(buffer, format='png')
+                    buffer.seek(0)
+                    img_png = buffer.getvalue()
+                    heat = base64.b64encode(img_png)
+                    heat = heat.decode('utf-8')
+                    buffer.close()
+                    pies.append(heat)
+                count.clear()
+                index_col.clear()
+            except:
+                continue
+        data = {
+            'pies': pies
+        }
+        return render(request, 'graphs/univariate/pie.html', data)
+    except Exception as e:
+        return HttpResponse("Error : ", e)
