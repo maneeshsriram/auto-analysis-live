@@ -16,9 +16,6 @@ def home(request):
 
 
 def report(request):
-    global df
-    global numerical
-    global categorical
     if request.method == 'POST':
         file = request.FILES['csvfile']
 
@@ -71,6 +68,7 @@ def report(request):
 
             request.session['numerical'] = numerical
             request.session['categorical'] = categorical
+            request.session['df'] = df
 
             for i in numerical:
                 single = {
@@ -163,7 +161,7 @@ def midpie(request):
 
 def sample(request):
     data = {
-        'head': df.head()
+        'head': request.session['df'].head()
     }
     return render(request, 'sample.html', data)
 
@@ -172,7 +170,7 @@ def pairplot(request):
     try:
         plt.switch_backend('AGG')
         plt.figure(figsize=(10, 6))
-        sns.pairplot(df)
+        sns.pairplot(request.session['df'])
         buffer = BytesIO()
         plt.savefig(buffer, format='png')
         buffer.seek(0)
@@ -192,7 +190,7 @@ def heatmap(request):
     try:
         plt.switch_backend('AGG')
         plt.figure(figsize=(10, 6))
-        sns.heatmap(data=df.corr(), annot=True)
+        sns.heatmap(data=request.session['df'].corr(), annot=True)
         buffer = BytesIO()
         plt.savefig(buffer, format='png')
         buffer.seek(0)
@@ -215,7 +213,7 @@ def scatterplot(request):
             try:
                 plt.switch_backend('AGG')
                 plt.figure(figsize=(10, 5))
-                sns.scatterplot(data=df, x=i, y=j)
+                sns.scatterplot(data=request.session['df'], x=i, y=j)
                 buffer = BytesIO()
                 plt.savefig(buffer, format='png')
                 buffer.seek(0)
@@ -239,7 +237,7 @@ def lineplot(request):
             try:
                 plt.switch_backend('AGG')
                 plt.figure(figsize=(10, 5))
-                sns.lineplot(data=df, x=i, y=j)
+                sns.lineplot(data=request.session['df'], x=i, y=j)
                 buffer = BytesIO()
                 plt.savefig(buffer, format='png')
                 buffer.seek(0)
@@ -262,7 +260,7 @@ def histogram(request):
     for i in request.session['numerical']:
         try:
             plt.switch_backend('AGG')
-            sns.histplot(data=df, x=i)
+            sns.histplot(data=request.session['df'], x=i)
             plt.xlabel(i)
             buffer = BytesIO()
             plt.savefig(buffer, format='png')
@@ -286,7 +284,7 @@ def boxplot(request):
         try:
             plt.switch_backend('AGG')
             plt.figure(figsize=(10, 5))
-            sns.boxplot(df[i])
+            sns.boxplot(request.session['df'][i])
             plt.xlabel(i)
             buffer = BytesIO()
             plt.savefig(buffer, format='png')
@@ -310,7 +308,7 @@ def density(request):
         try:
             plt.switch_backend('AGG')
             plt.figure(figsize=(10, 5))
-            sns.distplot(df[i])
+            sns.distplot(request.session['df'][i])
             plt.legend()
             buffer = BytesIO()
             plt.savefig(buffer, format='png')
@@ -332,10 +330,10 @@ def count(request):
     counts = []
     for i in request.session['categorical']:
         try:
-            if df[i].value_counts().count() < 12:
+            if request.session['df'][i].value_counts().count() < 12:
                 plt.switch_backend('AGG')
                 plt.figure(figsize=(10, 5))
-                sns.countplot(y=df[i])
+                sns.countplot(y=request.session['df'][i])
                 plt.legend()
                 buffer = BytesIO()
                 plt.savefig(buffer, format='png')
@@ -359,11 +357,11 @@ def pie(request):
     pies = []
     for i in request.session['categorical']:
         try:
-            count_pie = df[i].value_counts()
-            index_col = list(df[i].value_counts().index)
+            count_pie = request.session['df'][i].value_counts()
+            index_col = list(request.session['df'][i].value_counts().index)
             for j in count_pie:
                 count.append(j)
-            if (df[i].value_counts().count() < 10):
+            if (request.session['df'][i].value_counts().count() < 10):
                 plt.switch_backend('AGG')
                 plt.figure(figsize=(10, 5))
                 plt.pie(count, labels=index_col)
