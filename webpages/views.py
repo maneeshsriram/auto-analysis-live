@@ -17,16 +17,14 @@ def home(request):
 
 def report(request):
     global df
+    global numerical
+    global categorical
     if request.method == 'POST':
         file = request.FILES['csvfile']
 
         if file.content_type == 'application/vnd.ms-excel':
 
             df = pd.read_csv(file)
-            print("DF --->>>", type(df))
-
-            global numerical
-            global categorical
             numerical = df.select_dtypes(include=['int64']).columns.tolist()+df.select_dtypes(include=['float64']).columns.tolist(
             )+df.select_dtypes(include=['int32']).columns.tolist()+df.select_dtypes(include=['float32']).columns.tolist()
             categorical_temp = df.select_dtypes(
