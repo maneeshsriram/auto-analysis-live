@@ -16,6 +16,7 @@ def home(request):
 
 
 def report(request):
+    global df
     if request.method == 'POST':
         file = request.FILES['csvfile']
 
@@ -24,6 +25,8 @@ def report(request):
             df = pd.read_csv(file)
             print("DF --->>>", type(df))
 
+            global numerical
+            global categorical
             numerical = df.select_dtypes(include=['int64']).columns.tolist()+df.select_dtypes(include=['float64']).columns.tolist(
             )+df.select_dtypes(include=['int32']).columns.tolist()+df.select_dtypes(include=['float32']).columns.tolist()
             categorical_temp = df.select_dtypes(
@@ -65,10 +68,6 @@ def report(request):
 
             numericalValues = []
             categoricalValues = []
-
-            request.session['numerical'] = numerical
-            request.session['categorical'] = categorical
-            request.session['df'] = df
 
             for i in numerical:
                 single = {
@@ -161,7 +160,7 @@ def midpie(request):
 
 def sample(request):
     data = {
-        'head': request.session['df'].head()
+        'head': df.head()
     }
     return render(request, 'sample.html', data)
 
@@ -170,7 +169,7 @@ def pairplot(request):
     try:
         plt.switch_backend('AGG')
         plt.figure(figsize=(10, 6))
-        sns.pairplot(request.session['df'])
+        sns.pairplot(df)
         buffer = BytesIO()
         plt.savefig(buffer, format='png')
         buffer.seek(0)
@@ -190,7 +189,7 @@ def heatmap(request):
     try:
         plt.switch_backend('AGG')
         plt.figure(figsize=(10, 6))
-        sns.heatmap(data=request.session['df'].corr(), annot=True)
+        sns.heatmap(data=df.corr(), annot=True)
         buffer = BytesIO()
         plt.savefig(buffer, format='png')
         buffer.seek(0)
@@ -208,12 +207,12 @@ def heatmap(request):
 
 def scatterplot(request):
     scatterplots = []
-    for i in request.session['numerical']:
-        for j in request.session['numerical']:
+    for i in numerical:
+        for j in numerical:
             try:
                 plt.switch_backend('AGG')
                 plt.figure(figsize=(10, 5))
-                sns.scatterplot(data=request.session['df'], x=i, y=j)
+                sns.scatterplot(data=df, x=i, y=j)
                 buffer = BytesIO()
                 plt.savefig(buffer, format='png')
                 buffer.seek(0)
@@ -232,12 +231,12 @@ def scatterplot(request):
 
 def lineplot(request):
     lineplots = []
-    for i in request.session['numerical']:
-        for j in request.session['numerical']:
+    for i in numerical:
+        for j in numerical:
             try:
                 plt.switch_backend('AGG')
                 plt.figure(figsize=(10, 5))
-                sns.lineplot(data=request.session['df'], x=i, y=j)
+                sns.lineplot(data=df, x=i, y=j)
                 buffer = BytesIO()
                 plt.savefig(buffer, format='png')
                 buffer.seek(0)
@@ -257,10 +256,10 @@ def lineplot(request):
 def histogram(request):
     # plt.figure(figsize=(10, 5))
     histograms = []
-    for i in request.session['numerical']:
+    for i in numerical:
         try:
             plt.switch_backend('AGG')
-            sns.histplot(data=request.session['df'], x=i)
+            sns.histplot(data=df, x=i)
             plt.xlabel(i)
             buffer = BytesIO()
             plt.savefig(buffer, format='png')
@@ -280,11 +279,11 @@ def histogram(request):
 
 def boxplot(request):
     boxplots = []
-    for i in request.session['numerical']:
+    for i in numerical:
         try:
             plt.switch_backend('AGG')
             plt.figure(figsize=(10, 5))
-            sns.boxplot(request.session['df'][i])
+            sns.boxplot(df[i])
             plt.xlabel(i)
             buffer = BytesIO()
             plt.savefig(buffer, format='png')
@@ -304,11 +303,11 @@ def boxplot(request):
 
 def density(request):
     densitys = []
-    for i in request.session['numerical']:
+    for i in numerical:
         try:
             plt.switch_backend('AGG')
             plt.figure(figsize=(10, 5))
-            sns.distplot(request.session['df'][i])
+            sns.distplot(df[i])
             plt.legend()
             buffer = BytesIO()
             plt.savefig(buffer, format='png')
@@ -328,12 +327,12 @@ def density(request):
 
 def count(request):
     counts = []
-    for i in request.session['categorical']:
+    for i in categorical:
         try:
-            if request.session['df'][i].value_counts().count() < 12:
+            if df[i].value_counts().count() < 12:
                 plt.switch_backend('AGG')
                 plt.figure(figsize=(10, 5))
-                sns.countplot(y=request.session['df'][i])
+                sns.countplot(y=df[i])
                 plt.legend()
                 buffer = BytesIO()
                 plt.savefig(buffer, format='png')
@@ -355,13 +354,13 @@ def pie(request):
     count_pie = []
     count = []
     pies = []
-    for i in request.session['categorical']:
+    for i in categorical:
         try:
-            count_pie = request.session['df'][i].value_counts()
-            index_col = list(request.session['df'][i].value_counts().index)
+            count_pie = df[i].value_counts()
+            index_col = list(df[i].value_counts().index)
             for j in count_pie:
                 count.append(j)
-            if (request.session['df'][i].value_counts().count() < 10):
+            if (df[i].value_counts().count() < 10):
                 plt.switch_backend('AGG')
                 plt.figure(figsize=(10, 5))
                 plt.pie(count, labels=index_col)
