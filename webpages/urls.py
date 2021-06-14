@@ -14,7 +14,6 @@ urlpatterns = [
     path('heatmap/', views.heatmap, name='heatmap'),
     path('scatterplot/', views.scatterplot, name='scatterplot'),
     path('lineplot/', views.lineplot, name='lineplots'),
-    path('sample/', views.sample, name='sample'),
     path('midpair/', views.midpair, name='midpair'),
     path('midheat/', views.midheat, name='midheat'),
     path('midscatter/', views.midscatter, name='midscatter'),
